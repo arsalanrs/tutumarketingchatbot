@@ -1,0 +1,110 @@
+COMPANY: Morty
+WEBSITE: https://www.morty.com/
+INDUSTRY: Mortgage Technology / FinTech
+NMLS ID: #1429243
+
+COMPANY OVERVIEW:
+Morty is an all-in-one mortgage platform designed to power mortgage businesses from day one. The platform is fast, compliant, and scalable, enabling businesses to launch a fully compliant mortgage operation in as little as 48 hours. Morty provides a complete solution including licensing, LOS (Loan Origination System), pricing, digital storefront, automation, and more - all fully integrated and ready to go.
+
+CORE PRODUCTS & SERVICES:
+
+1. Full Tech Stack
+   - Complete suite of in-house tools: POS (Point of Sale), PPE (Pricing and Product Engine), LOS, and client experiences
+   - Built to scale and continuously shaped by customer feedback
+   - Modern loan origination and point-of-sale tools built directly into workflow
+
+2. Mortgage Infrastructure
+   - Access to 25+ lenders through integrated lender network
+   - Growing network of lenders and loan products
+   - Lender marketplace with 20+ top wholesale lenders
+   - Can add custom lenders
+
+3. AI Toolset
+   - AI Loan Advisor: Finds the right program in seconds using borrower data, pricing engine, and lender eligibility rules
+   - Fulfillment AI: Automates key processing and back-office tasks to improve accuracy and reduce time-to-close
+   - Predictive Insights: Smart lead scoring and borrower behavior signals
+   - Rosey AI: Proprietary AI assistant
+
+4. Compliance & Licensing
+   - Handles regulatory, licensing, and compliance in-house
+   - Helps with MU1 brokerage filings
+   - Manages licensing, disclosures, lender rules behind the scenes
+   - Loan logs and record keeping
+
+5. Digital Storefront & Marketing
+   - Professional, branded online presence
+   - Templates, domains, and CRM integrations
+   - Branded storefront and marketing tools
+   - Marketing toolkit available
+
+6. Team Management
+   - Shared pipelines and deal visibility
+   - Performance tools that grow with business
+   - Flexible commission structures (tiered splits, bonuses, overrides)
+   - Team collaboration tools
+
+KEY VALUE PROPOSITIONS:
+
+- 48 Hours Time to Go Live: Launch a fully compliant mortgage operation in as little as two days
+- 25+ Lenders Accessible: Available through Morty's integrated lender network
+- 90% Less Cost to Originate: Infrastructure produces loans at a fraction of traditional cost
+- Zero Ops Hires Required: Handles licensing, disclosures, and back office from day one
+
+TARGET MARKETS:
+
+1. Individuals & Loan Officers
+   - Solo operators
+   - Individual mortgage professionals
+   - Producer tier users
+
+2. Mortgage Businesses
+   - Start a mortgage business
+   - Migrate existing brokerages
+   - Add mortgage to existing business
+   - Enterprise solutions
+   - White label options
+
+3. Specialized Use Cases
+   - Realtor dual capacity
+   - Non-QM lending support
+   - Custom bespoke solutions
+
+KEY FEATURES:
+
+- Product & Lender Access: Quote from 25+ lenders instantly using built-in pricing engine
+- Fully Integrated LOS & POS: One system for client intake and back-office management
+- Done-for-You Compliance: Licensing, disclosures, lender rules handled behind the scenes
+- AI-powered automation: Replaces hours of manual work, powers faster loan solutions
+- Pipeline visibility: Track every loan in real time with status updates
+- Automated borrower tools: Smart borrower-facing tools for pre-approvals, disclosures
+- Processing & fulfillment: Hands-on support to close loans efficiently
+- Data & integrations: Platform updates and integration capabilities
+
+COMPETITIVE ADVANTAGES:
+
+- Internet-based and user-friendly platform
+- Customer feedback implementation (ideas don't fall on deaf ears)
+- Different approach to the mortgage market
+- Modern technology stack built in-house
+- Scalable from solo operators to enterprise teams
+- Compliance handled automatically
+- AI tools built-in from day one
+
+PRICING MODEL:
+- Tiered offerings and pricing as you grow
+- Flexible setup to match goals, brand, and business stage
+- Producer Tier and Business Tier options available
+
+COMPANY POSITIONING:
+Morty positions itself as making "mortgage better for everyone" by providing an all-in-one platform that eliminates traditional barriers to entry in the mortgage industry. The platform is designed for tech-savvy users and emphasizes speed, compliance, and scalability.
+
+TECHNOLOGY HIGHLIGHTS:
+- Proprietary technology stack
+- AI-enabled mortgage solutions
+- Cloud-based platform
+- Continuous platform updates
+- Integration capabilities with third-party tools
+
+LICENSING:
+Morty is a licensed mortgage broker. NMLS ID #1429243. Morty, Inc. is authorized to do business as "Morty" in certain states. All loans originated by Morty are funded by third party lenders. Equal Housing Opportunity lender.
+
