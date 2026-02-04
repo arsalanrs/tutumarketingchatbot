@@ -1,8 +1,45 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react'
 import { useRouter } from 'next/navigation'
 import '../globals.css'
+
+// Memoized suggested questions component
+const SuggestedQuestions = memo(({ isLoading, onQuestionClick }: { isLoading: boolean; onQuestionClick: (question: string) => void }) => {
+  const questions = useMemo(() => [
+    { text: "What offers do we have?", question: "What offers do we have in our Offers Library?" },
+    { text: "Show me available formats", question: "Show me all the formats available in the Formats Library" },
+    { text: "What angles do we have?", question: "What angles are in our Angles Library?" },
+    { text: "Show Creative Pipeline", question: "Show me the current Creative Pipeline" },
+    { text: "Best angle for target audience?", question: "What's the best angle for our target audience?" },
+    { text: "Create ad with top format", question: "Create an ad using our top performing format" },
+    { text: "Analyze Creative Pipeline", question: "Analyze our creative pipeline and suggest improvements" },
+    { text: "Best combination for engagement?", question: "What's the best combination of offer, angle, and format for maximum engagement?" },
+    { text: "Generate ad variations", question: "Generate 3 different ad variations for the same offer" },
+  ], [])
+
+  return (
+    <div className="chatRightSection">
+      <div className="suggestedQuestions">
+        <h3 className="suggestedQuestionsTitle">Suggested Questions</h3>
+        <div className="questionsList">
+          {questions.map((q, index) => (
+            <button
+              key={index}
+              className="questionButton"
+              onClick={() => onQuestionClick(q.question)}
+              disabled={isLoading}
+            >
+              {q.text}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+})
+
+SuggestedQuestions.displayName = 'SuggestedQuestions'
 
 export default function ChatPage() {
   const router = useRouter()
@@ -10,6 +47,8 @@ export default function ChatPage() {
   const [inputMessage, setInputMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     // Check authentication
@@ -22,25 +61,38 @@ export default function ChatPage() {
   }, [router])
 
   useEffect(() => {
-    // Scroll to bottom when messages change
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    // Debounced scroll to bottom when messages change
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current)
+    }
+    scrollTimeoutRef.current = setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, 100)
+    
+    return () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+    }
   }, [messages])
 
-  const handleSignOut = () => {
+  const handleSignOut = useCallback(() => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('isAuthenticated')
       localStorage.removeItem('userEmail')
       localStorage.removeItem('sessionId')
     }
     router.push('/')
-  }
+  }, [router])
 
-  const handleSendMessage = async (e: React.FormEvent) => {
+  const handleSendMessage = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!inputMessage.trim() || isLoading) return
+    const currentMessage = inputRef.current?.value || inputMessage
+    if (!currentMessage.trim() || isLoading) return
 
-    const userMessage = inputMessage.trim()
+    const userMessage = currentMessage.trim()
     setInputMessage('')
+    if (inputRef.current) inputRef.current.value = ''
     setMessages(prev => [...prev, { role: 'user', content: userMessage }])
     setIsLoading(true)
 
@@ -52,11 +104,8 @@ export default function ChatPage() {
         localStorage.setItem('sessionId', sessionId)
       }
 
-      // n8n chat webhook URL - using the chat trigger webhook
-      const chatWebhookUrl = process.env.NEXT_PUBLIC_N8N_CHAT_WEBHOOK_URL || 
-        'https://n8n.srv1166732.hstgr.cloud/webhook/81c3afff-ff47-4f64-9781-a46a43ee069e'
-
-      const response = await fetch(chatWebhookUrl, {
+      // Use Next.js API route as proxy to avoid CORS issues
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +176,14 @@ export default function ChatPage() {
           assistantMessage = JSON.stringify(data).substring(0, 500) || 'No response received'
         }
         
-        setMessages(prev => [...prev, { role: 'assistant', content: assistantMessage }])
+        setMessages(prev => {
+          // Prevent duplicate messages
+          const lastMessage = prev[prev.length - 1]
+          if (lastMessage?.role === 'assistant' && lastMessage?.content === assistantMessage) {
+            return prev
+          }
+          return [...prev, { role: 'assistant', content: assistantMessage }]
+        })
       } else {
         const errorData = await response.text()
         setMessages(prev => [...prev, { 
@@ -143,65 +199,70 @@ export default function ChatPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [isLoading])
 
   return (
-    <div className="container">
+    <div className="container chatPageContainer">
       <button onClick={handleSignOut} className="signOutButton">
         SIGN OUT
       </button>
 
-      <div className="chatContainer">
-        <div className="chatHeader">
-          <h1 className="chatTitle">Tutu Marketing Assistant</h1>
-          <p className="chatSubtitle">Discuss your data and create ads</p>
+      <div className="chatLayout">
+        <div className="chatLeftSection">
+          <div className="chatHeader">
+            <h1 className="chatTitle">TUTU MARKETING ASSISTANT</h1>
+            <p className="chatSubtitle">Discuss your data and create ads</p>
+          </div>
+
+          <div className="chatMessages">
+            {messages.length === 0 && (
+              <div className="welcomeMessage">
+                <p>Welcome! I'm your Tutu Marketing Creative Assistant.</p>
+                <p>I have access to your Offers Library, Formats Library, Angles Library, Creative Matrix, and Creative Pipeline.</p>
+                <p>You can ask me to create ads, discuss strategies, or review your creative pipeline.</p>
+              </div>
+            )}
+            
+            {messages.map((msg, index) => (
+              <div key={`msg-${index}-${msg.content.substring(0, 20)}`} className={`message ${msg.role}`}>
+                <div className="messageContent">
+                  {msg.content}
+                </div>
+              </div>
+            ))}
+
+            {isLoading && (
+              <div className="message assistant">
+                <div className="messageContent">
+                  <span className="loading"></span>
+                  Thinking...
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <form onSubmit={handleSendMessage} className="chatInputForm">
+            <input
+              ref={inputRef}
+              type="text"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              placeholder="Type your message..."
+              className="chatInput"
+              disabled={isLoading}
+            />
+            <button
+              type="submit"
+              className="chatSendButton"
+              disabled={isLoading || !inputMessage.trim()}
+            >
+              SEND
+            </button>
+          </form>
         </div>
 
-        <div className="chatMessages">
-          {messages.length === 0 && (
-            <div className="welcomeMessage">
-              <p>Welcome! I'm your Tutu Marketing Creative Assistant.</p>
-              <p>I have access to your Offers Library, Formats Library, Angles Library, Creative Matrix, and Creative Pipeline.</p>
-              <p>You can ask me to create ads, discuss strategies, or review your creative pipeline.</p>
-            </div>
-          )}
-          
-          {messages.map((msg, index) => (
-            <div key={index} className={`message ${msg.role}`}>
-              <div className="messageContent">
-                {msg.content}
-              </div>
-            </div>
-          ))}
-
-          {isLoading && (
-            <div className="message assistant">
-              <div className="messageContent">
-                <span className="loading"></span>
-                Thinking...
-              </div>
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        <form onSubmit={handleSendMessage} className="chatInputForm">
-          <input
-            type="text"
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            placeholder="Type your message..."
-            className="chatInput"
-            disabled={isLoading}
-          />
-          <button
-            type="submit"
-            className="chatSendButton"
-            disabled={isLoading || !inputMessage.trim()}
-          >
-            SEND
-          </button>
-        </form>
+        <SuggestedQuestions isLoading={isLoading} onQuestionClick={setInputMessage} />
       </div>
 
       <footer className="footer">
