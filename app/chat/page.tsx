@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react'
 import { useRouter } from 'next/navigation'
+import ReactMarkdown from 'react-markdown'
 import '../globals.css'
 
 // Memoized suggested questions component
@@ -226,7 +227,13 @@ export default function ChatPage() {
             {messages.map((msg, index) => (
               <div key={`msg-${index}-${msg.content.substring(0, 20)}`} className={`message ${msg.role}`}>
                 <div className="messageContent">
-                  {msg.content}
+                  {msg.role === 'assistant' ? (
+                    <div className="markdownContent">
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    </div>
+                  ) : (
+                    msg.content
+                  )}
                 </div>
               </div>
             ))}
@@ -235,7 +242,7 @@ export default function ChatPage() {
               <div className="message assistant">
                 <div className="messageContent">
                   <span className="loading"></span>
-                  Thinking...
+                  <span>Thinking...</span>
                 </div>
               </div>
             )}

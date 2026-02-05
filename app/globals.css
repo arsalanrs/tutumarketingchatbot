@@ -671,6 +671,125 @@ body::after {
   border: 1px solid rgba(0, 150, 255, 0.3);
 }
 
+/* Markdown Content Styling */
+.markdownContent {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.markdownContent p {
+  margin: 0 0 12px 0;
+}
+
+.markdownContent p:last-child {
+  margin-bottom: 0;
+}
+
+.markdownContent strong {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.markdownContent em {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.markdownContent ul,
+.markdownContent ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.markdownContent li {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+.markdownContent ul {
+  list-style-type: disc;
+}
+
+.markdownContent ol {
+  list-style-type: decimal;
+}
+
+.markdownContent li::marker {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.markdownContent h1,
+.markdownContent h2,
+.markdownContent h3,
+.markdownContent h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  color: #ffffff;
+}
+
+.markdownContent h1 {
+  font-size: 20px;
+}
+
+.markdownContent h2 {
+  font-size: 18px;
+}
+
+.markdownContent h3 {
+  font-size: 16px;
+}
+
+.markdownContent code {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: #00ffff;
+}
+
+.markdownContent pre {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 12px;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 12px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.markdownContent pre code {
+  background: transparent;
+  padding: 0;
+  color: #ffffff;
+}
+
+.markdownContent blockquote {
+  border-left: 3px solid rgba(0, 150, 255, 0.5);
+  padding-left: 16px;
+  margin: 12px 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+}
+
+.markdownContent hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 16px 0;
+}
+
+.markdownContent a {
+  color: #00aaff;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.markdownContent a:hover {
+  color: #00ccff;
+}
+
 .chatInputForm {
   display: flex;
   gap: 12px;
