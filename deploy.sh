@@ -76,3 +76,4 @@ echo "🎉 Deployment completed successfully!"
 echo "📊 Check status with: pm2 status"
 echo "📋 View logs with: pm2 logs tutumarketing"
 
+

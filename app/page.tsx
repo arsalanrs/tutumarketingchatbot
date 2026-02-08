@@ -18,7 +18,24 @@ export default function HomePage() {
   const [success, setSuccess] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [parsingStatus, setParsingStatus] = useState('')
+  const [parsingMessageIndex, setParsingMessageIndex] = useState(0)
   const router = useRouter()
+  
+  // Random messages for parsing status
+  const parsingMessages = [
+    'Parsing data and ingesting to Pinecone...',
+    'Analyzing website content and structure...',
+    'Extracting key information from your knowledge base...',
+    'Processing product categories and metadata...',
+    'Building vector embeddings for semantic search...',
+    'Indexing content into Pinecone database...',
+    'Optimizing data for AI retrieval...',
+    'Finalizing knowledge base integration...',
+    'Parsing takes about 10-15 minutes. Please be patient...',
+    'Deep learning models are processing your data...',
+    'Creating searchable knowledge vectors...',
+    'Almost there! Finalizing the setup...',
+  ]
 
   useEffect(() => {
     // Check if user is already logged in
@@ -92,10 +109,16 @@ export default function HomePage() {
 
       if (response.ok) {
         setSuccess('Workflow triggered successfully! Data is being processed...')
-        setParsingStatus('Parsing data and ingesting to Pinecone...')
+        setParsingStatus('active')
+        setParsingMessageIndex(0)
         
         // Store company name (extracted from URL) for matching (since Pinecone workflow uses Company Name)
         localStorage.setItem('pendingCompanyName', companyNameFromUrl)
+        
+        // Rotate messages every 3 seconds
+        const messageInterval = setInterval(() => {
+          setParsingMessageIndex(prev => (prev + 1) % parsingMessages.length)
+        }, 3000)
         
         // Start polling for parsing completion
         // Try both exact sessionId and company name match
@@ -114,13 +137,17 @@ export default function HomePage() {
             
             if (statusData.completed) {
               clearInterval(pollInterval)
-              setParsingStatus('Parsing completed!')
+              clearInterval(messageInterval)
+              setParsingStatus('completed')
+              setParsingMessageIndex(0)
               localStorage.removeItem('pendingCompanyName')
               setTimeout(() => {
                 router.push('/chat')
               }, 2000)
             } else if (statusData.status === 'expired') {
               clearInterval(pollInterval)
+              clearInterval(messageInterval)
+              setParsingStatus('')
               setError('Parsing status expired. Please try again.')
             }
           } catch (err) {
@@ -128,13 +155,18 @@ export default function HomePage() {
           }
         }, 2000) // Poll every 2 seconds
         
-        // Stop polling after 5 minutes (timeout)
+        // Stop polling after 15 minutes (timeout)
         setTimeout(() => {
           clearInterval(pollInterval)
-          if (parsingStatus !== 'Parsing completed!') {
-            setError('Parsing is taking longer than expected. You can proceed to chat anyway.')
-          }
-        }, 5 * 60 * 1000)
+          clearInterval(messageInterval)
+          setParsingStatus(prev => {
+            if (prev !== 'completed') {
+              setError('Parsing is taking longer than expected. You can proceed to chat anyway.')
+              return ''
+            }
+            return prev
+          })
+        }, 15 * 60 * 1000)
         
         // Clear form fields
         setCompanyName('')
@@ -300,9 +332,27 @@ export default function HomePage() {
             {error && <div className="error">{error}</div>}
             {success && <div className="success">{success}</div>}
             {parsingStatus && (
-              <div className={`parsingStatus ${parsingStatus.includes('completed') ? 'completed' : ''}`}>
-                {parsingStatus}
-                {!parsingStatus.includes('completed') && <span className="loading"></span>}
+              <div className={`parsingStatusContainer ${parsingStatus === 'completed' ? 'completed' : ''}`}>
+                <div className="parsingStatusContent">
+                  <div className="parsingLoader">
+                    <div className="spinner"></div>
+                    <div className="pulseRing"></div>
+                    <div className="pulseRing delay1"></div>
+                    <div className="pulseRing delay2"></div>
+                  </div>
+                  <div className="parsingText">
+                    <div className="parsingMessage" key={parsingMessageIndex}>
+                      {parsingStatus === 'completed' 
+                        ? 'Parsing completed! Redirecting to chat...' 
+                        : parsingMessages[parsingMessageIndex]}
+                    </div>
+                    {parsingStatus !== 'completed' && (
+                      <div className="parsingSubtext">
+                        This process typically takes 10-15 minutes
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 

@@ -12,3 +12,4 @@ services:
       - key: NEXT_PUBLIC_N8N_CHAT_WEBHOOK_URL
         sync: false  # Set this in Render dashboard
 
+
