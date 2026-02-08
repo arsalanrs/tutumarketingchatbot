@@ -356,20 +356,30 @@ export default function HomePage() {
               </div>
             )}
 
-            <button
-              type="submit"
-              className="button"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <span className="loading"></span>
-                  TRIGGERING WORKFLOW...
-                </>
-              ) : (
-                'TRIGGER WORKFLOW'
-              )}
-            </button>
+            <div className="formButtons">
+              <button
+                type="submit"
+                className="button"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <span className="loading"></span>
+                    TRIGGERING WORKFLOW...
+                  </>
+                ) : (
+                  'TRIGGER WORKFLOW'
+                )}
+              </button>
+              <button
+                type="button"
+                className="button buttonSecondary"
+                onClick={() => router.push('/chat')}
+                disabled={isLoading}
+              >
+                GO TO CHAT
+              </button>
+            </div>
           </form>
 
           <div className="infoSection">

@@ -338,8 +338,14 @@ body::after {
   background: rgba(255, 255, 255, 0.3);
 }
 
+.formButtons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
 .button {
-  width: 100%;
+  flex: 1;
   padding: 16px 24px;
   background: #ffffff;
   color: #000000;
@@ -349,10 +355,20 @@ body::after {
   font-family: 'Rajdhani', sans-serif;
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: 10px;
   text-transform: uppercase;
   letter-spacing: 3px;
   position: relative;
+}
+
+.buttonSecondary {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.buttonSecondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .button:hover {
